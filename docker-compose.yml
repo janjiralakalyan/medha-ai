@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: MEDHA
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: MEDHA
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - MEDHA-network
+
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - MEDHA-network
+
+volumes:
+  postgres_data:
+  chroma_data:
+
+networks:
+  MEDHA-network:
+    driver: bridge
